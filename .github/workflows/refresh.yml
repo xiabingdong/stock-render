@@ -9,7 +9,14 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Refresh API
+      - name: Refresh each stock
         run: |
-          curl -X POST https://stock-render-hz41.onrender.com/api/refresh
-          echo "✅ 刷新完成"
+          URL="https://stock-render-hz41.onrender.com"
+          STOCKS="AAPL MSFT INTC NVDA LITE META TSLA AMD GOOGL AMZN"
+          
+          for sym in $STOCKS; do
+            echo "Fetching $sym..."
+            curl -s --max-time 15 "$URL/api/analyze/$sym" -o /dev/null -w "HTTP:%{http_code}\n"
+          done
+          
+          echo "✅ 全部刷新完成"
