@@ -17,7 +17,7 @@ from collections import OrderedDict
 from supabase import create_client, Client
 import requests
 
-app = Flask(__name__, static_folder="static", static_url_path="")
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 CORS(app)
 
 # ============================================
