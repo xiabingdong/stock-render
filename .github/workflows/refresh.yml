@@ -1,0 +1,15 @@
+name: Refresh Stocks
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # 每2小时执行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Refresh API
+        run: |
+          curl -X POST https://stock-render-hz41.onrender.com/api/refresh
+          echo "✅ 刷新完成"
