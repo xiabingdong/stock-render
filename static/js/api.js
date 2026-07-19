@@ -67,12 +67,18 @@ async function analyzeStock(symbol) {
     }
 }
 
-// 刷新所有股票
+// 刷新所有股票（逐个GET调用，避免POST超时）
 async function refreshAll() {
     try {
-        const resp = await fetch(`${API_BASE}/refresh`, { method: 'POST' });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        return await resp.json();
+        const watchList = await getWatchList();
+        if (!watchList || watchList.length === 0) {
+            return [];
+        }
+        // 逐个分析，并行请求
+        const symbols = watchList.map(s => s.symbol);
+        const promises = symbols.map(symbol => analyzeStock(symbol));
+        const results = await Promise.all(promises);
+        return results.filter(r => r !== null);
     } catch (e) {
         console.error('刷新失败:', e);
         return [];
