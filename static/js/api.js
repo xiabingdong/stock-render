@@ -1,13 +1,8 @@
 // ============================================
 // API 调用模块 - Render 部署版
-// 前端 → Flask 后端 (/api) → 外部 API → Supabase
 // ============================================
 
 const API_BASE = '/api';
-
-// ============================================
-// Flask 后端 API（主要数据源）
-// ============================================
 
 // 获取大盘指数
 async function getIndices() {
@@ -33,7 +28,7 @@ async function getWatchList() {
     }
 }
 
-// 获取最新分析（从数据库）
+// 获取最新分析
 async function getLatestAnalysis() {
     try {
         const resp = await fetch(`${API_BASE}/analysis/latest`);
@@ -45,7 +40,7 @@ async function getLatestAnalysis() {
     }
 }
 
-// 获取单个股票历史
+// 获取历史
 async function getStockHistory(symbol, limit = 10) {
     try {
         const resp = await fetch(`${API_BASE}/analysis/${symbol}?limit=${limit}`);
@@ -57,7 +52,7 @@ async function getStockHistory(symbol, limit = 10) {
     }
 }
 
-// 分析单只股票（Flask 后端调外部 API）
+// 分析股票
 async function analyzeStock(symbol) {
     try {
         const resp = await fetch(`${API_BASE}/analyze/${symbol}`);
@@ -69,7 +64,7 @@ async function analyzeStock(symbol) {
     }
 }
 
-// 刷新所有股票
+// 刷新全部
 async function refreshAll() {
     try {
         const resp = await fetch(`${API_BASE}/refresh`, { method: 'POST' });
@@ -81,7 +76,7 @@ async function refreshAll() {
     }
 }
 
-// 抓取推文并分析
+// 推文分析
 async function refreshTweets() {
     try {
         const resp = await fetch(`${API_BASE}/tweets/refresh`, { method: 'POST' });
@@ -93,22 +88,7 @@ async function refreshTweets() {
     }
 }
 
-// 移除股票（从关注列表移除，不删历史）
-async function removeStock(symbol) {
-    try {
-        const resp = await fetch(`${API_BASE}/watch-list/${symbol}/remove`, { method: 'POST' });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        await loadStocks();
-        showToast(`✅ 已移除 ${symbol}`);
-    } catch (e) {
-        console.error('移除失败:', e);
-        showToast('❌ 移除失败');
-    }
-}
-
-// ============================================
 // 等待
-// ============================================
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
