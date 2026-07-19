@@ -42,7 +42,7 @@ else:
 # ============================================
 # 通用工具
 # ============================================
-def retry_call(func, max_retries=3, delay=1.5, *args, **kwargs):
+def retry_call(func, *args, max_retries=3, delay=1.5, **kwargs):
     """通用重试包装器"""
     for attempt in range(max_retries):
         try:
