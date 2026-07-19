@@ -827,8 +827,8 @@ def api_tweet_refresh():
 
 @app.route("/", methods=["GET"])
 def serve_index():
-    from flask import send_file
-    return send_file(app.static_folder + "/index.html")
+    from flask import send_from_directory
+    return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/api", methods=["GET"])
 def api():
