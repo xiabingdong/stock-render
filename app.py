@@ -825,6 +825,11 @@ def api_tweet_refresh():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/", methods=["GET"])
+def serve_index():
+    from flask import send_file
+    return send_file(app.static_folder + "/index.html")
+
 @app.route("/api", methods=["GET"])
 def api():
     """首页"""
