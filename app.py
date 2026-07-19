@@ -17,7 +17,7 @@ from collections import OrderedDict
 from supabase import create_client, Client
 import requests
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", static_url_path="")
 CORS(app)
 
 # ============================================
@@ -825,8 +825,8 @@ def api_tweet_refresh():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/", methods=["GET"])
-def index():
+@app.route("/api", methods=["GET"])
+def api():
     """首页"""
     return jsonify({
         "status": "ok",
